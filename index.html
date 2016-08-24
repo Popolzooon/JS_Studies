@@ -18,8 +18,20 @@ body {
     color: white;
 }
 
-#ContentText {
+#TwitchContent {
 margin: 15% 10% 15% 10%;
+}
+
+.cBox {
+border-style: solid;
+border-color: #011f4b;
+background-color: white;
+color: black;
+padding: 0.75% 1% 0.75% 1%;
+}
+
+.right {
+
 }
 
 #footer {
@@ -38,98 +50,58 @@ color: white;
 <body>
 
 <div class="container-fluid" id="ContainerText" >
-<div class="container-fluid" id="ContentText" align="center">
+<div class="container-fluid" id="ContentText">
+<h2>Twitch Streamers</h2>
 <div class="container-fluid" id="TwitchContent"></div>
-
-<div class="container-fluid" id="cBox0">
-
-<img class="Logo0" id="cLogoImg0" src="" alt="Channel Logo" height="50" width="50" >
-<a class="NameLink0 NameLinkA0" id="cNameLinkA0" href="google.com"> </a>
-<span class="Status0" id="cStatus0"></span>
-
 </div>
-
-<div class="container-fluid" id="cBox1">
-
-<img class="Logo1" id="cLogoImg1" src="" alt="Channel Logo" height="50" width="50" >
-<a class="NameLink1 NameLinkA1" id="cNameLinkA1" href="google.com"> </a>
-<span class="Status1" id="cStatus1"></span>
-
-</div>
-
-<div class="container-fluid" id="cBox2">
-
-<img class="Logo2" id="cLogoImg2" src="" alt="Channel Logo" height="50" width="50" >
-<a class="NameLink2 NameLinkA2" id="cNameLinkA2" href="google.com"> </a>
-<span class="Status2" id="cStatus2"></span>
-
-</div>
-
 </div>
 </div>
 
 <script>
-var defaultLogoSrc="https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png";
-
-var channelName="";
-var channelStatus="";
-//
 var channelNameList=["ESL_SC2", "brunofin", "RobotCaleb", "comster404", "cretetion", "freecodecamp", "storbeck", "habathcx", "noobs2ninjas", "OgamingSC2"];
-var linkAPI = "";
+var channelStatus="Account Closed!";
+var logoImgLink="https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png";
+var boxColor='#ffffff';
 
-var cBoxId='';
-var clLogoId='';
-var clLinkId='';
-var clStatusId='';
-
+var html='';
 
 for (var i=0; i<channelNameList.length; i++) {
 (function(i) {
 
-
-
-
-
 $.getJSON("https://api.twitch.tv/kraken/channels/"+channelNameList[i]+"?callback=?", function(data) {
-
-var html="";
-var logoImgLink="";
-
-cBoxId="cBox"+i;
-clNameLinkAId=".NameLinkA"+i;
-clNameLinkId=".NameLink"+i;
-clLogoId=".Logo"+i;
-clStatusId=".Status"+i;
-
 
 var cExists=JSON.stringify(data.status);
 var cActive=JSON.stringify(data.mature);
 
 if (cExists == 422) {
     channelStatus="Account Closed"; 
-    logoImgLink=defaultLogoSrc;}
+    logoImgLink="https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png";
+    boxColor='#d9d9d9';}
 else if (cExists !== 422 && cActive !== true) {
     channelStatus="Offline"; 
     logoImgLink=JSON.stringify(data.logo); 
-    logoImgLink=logoImgLink.replace(/"/g,''); }
+    logoImgLink=logoImgLink.replace(/"/g,'');
+    boxColor='#b3e0ff';
+ }
 else if (cExists !== 422 && cActive === true) {
     channelStatus=JSON.stringify(data.status); 
     logoImgLink=JSON.stringify(data.logo); 
-    logoImgLink=logoImgLink.replace(/"/g,''); }
-else {
-    channelStatus="Account Closed!"; 
-    logoImgLink=defaultLogoSrc;}
+    logoImgLink=logoImgLink.replace(/"/g,'');
+    boxColor='#c6ecc6';
+}
 
-$(clNameLinkAId).html(channelNameList[i]);
-$(clNameLinkId).attr("href", "https://www.twitch.tv/"+channelNameList[i]);
-$(clLogoId).attr('src', logoImgLink);
-$(clStatusId).html(channelStatus);
+html+='<div class="container-fluid cBox" id="cBox'+i+'" style="background-color:'+boxColor+';"><img id="cLogoImg'+i+'" src="'+logoImgLink+'" alt="Channel Logo" height="50" width="50"><a class="NameLink'+i+' NameLinkA'+i+'" id="cNameLinkA'+i+'" href="'+'https://www.twitch.tv/'+channelNameList[i]+'">'+channelNameList[i]+'</a><span class="right" id="cStatus'+i+'">'+channelStatus+'</span></div>';
 
+document.getElementById("TwitchContent").innerHTML=html;
 
+document.getElementById("ContentText").style.margin="5% 10% 5% 10%";
+document.getElementById("footer").style.position="relative";
+   
 }); 
-
 })(i);
 }
+
+
 
 </script>
 
