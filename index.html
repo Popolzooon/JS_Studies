@@ -22,18 +22,6 @@ body {
 margin: 15% 10% 15% 10%;
 }
 
-.cBox {
-border-style: solid;
-border-color: #011f4b;
-background-color: white;
-color: black;
-padding: 0.75% 1% 0.75% 1%;
-}
-
-.right {
-
-}
-
 #footer {
 position:absolute;
 bottom:0;
@@ -42,9 +30,6 @@ line-height: 1;
 width: 100%;
 color: white;
 }
-
-
-
 </style>
 
 <body>
@@ -93,7 +78,6 @@ else if (cExists !== 422 && cActive === true) {
 html+='<div class="container-fluid cBox" id="cBox'+i+'" style="background-color:'+boxColor+';"><img id="cLogoImg'+i+'" src="'+logoImgLink+'" alt="Channel Logo" height="50" width="50"><a class="NameLink'+i+' NameLinkA'+i+'" id="cNameLinkA'+i+'" href="'+'https://www.twitch.tv/'+channelNameList[i]+'">'+channelNameList[i]+'</a><span class="right" id="cStatus'+i+'">'+channelStatus+'</span></div>';
 
 document.getElementById("TwitchContent").innerHTML=html;
-
 document.getElementById("ContentText").style.margin="5% 10% 5% 10%";
 document.getElementById("footer").style.position="relative";
    
@@ -101,11 +85,7 @@ document.getElementById("footer").style.position="relative";
 })(i);
 }
 
-
-
 </script>
-
-
 
 <footer id="footer">
       <div class="container-fluid">
