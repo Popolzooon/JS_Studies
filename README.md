@@ -1,2 +1,2 @@
 # TwitchAPIStudy
-for FreeCOdeCamp
+List of Twitch Streamers for FreeCodeCamp
