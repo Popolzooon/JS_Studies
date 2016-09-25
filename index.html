@@ -17,20 +17,16 @@
 font-family: 'CalculatorFont';
 src: url('https://raw.githubusercontent.com/green-slug/Pics/master/pocket_calcuatlor_tt.ttf');
 }
-
 body {
 background-color: #E5E5E5;
 }
-
 #ContainerMain {
 padding: 5% 1% 5% 1%; 
 }
-
 #footer {
 font-size: 10px;
 line-height: 1;
 }
-
 #CalculatorMain {
 padding: 2% 1% 2% 1%; 
 box-shadow: 3px 3px 10px 5px #404040;
@@ -45,13 +41,11 @@ background-color: #6f6f5f;
 width: 300px;
 height: 450px;
 }
-
 #CalculatorHeader {
 padding: 3% 1% 3% 1%; 
 text-align: center;
 color: #fff;
 }
-
 #CalculatorField {
 padding: 1% 3% 1% 1%;
 width: 226px;
@@ -68,12 +62,10 @@ font-size: 44px;
 font-style: italic;
 text-align: right;
 }
-
 #CalculatorButtons {
 width: 228px;
 padding: 5% 0% 0% 0%;
 }
-
 .button {
 margin: 2px 2px 2px 2px;
 box-shadow: 2px 2px 5px #404040;
@@ -85,19 +77,15 @@ border-bottom-color: #616161;
 height: 50px;
 width: 50px;
 }
-
 #btnEqual {
 width: 108px;
 background-color: #669933;
 }
-
 .btnNumber {
 background-color: #e5e5e5;
 }
-
 .btnOperation {
 }
-
 .btnClear {
 background-color: #993333;
 }
@@ -148,10 +136,11 @@ background-color: #993333;
 
 <script>
 var buffer='';
-var firstNum='';
+var isFirstNum=false;
 var secondNum='';
 var operation='';
 var result=0;
+var test='';
 
 function clearField(){
 buffer='';
@@ -174,44 +163,44 @@ if (buffer.length<=10) {
 buffer=buffer+number;
 document.getElementById("CalculatorField").innerHTML=buffer;
 }
-
-if (operation=='') {firstNum=buffer;}
+if (isFirstNum===false) {firstNum=buffer;}
 else {secondNum=buffer;}
-
-console.log('buffer: '+buffer);
-console.log('firstNum: '+firstNum);
-console.log('secondNum: '+secondNum);
-console.log('operation: '+operation);
-
 return buffer;
 };
 
 function addNumbers(){
+if (secondNum!=='') {calcNumbers();}
 operation='plus';
+isFirstNum=true;
 buffer='';
 return;
 };
 
 function substrNumbers(){
+if (secondNum!=='') {calcNumbers();}
 operation='minus';
+isFirstNum=true;
 buffer='';
 return;
 };
 
 function multNumbers(){
+if (secondNum!=='') {calcNumbers();}
 operation='multiple';
+isFirstNum=true;
 buffer='';
 return;
 };
 
 function divNumbers(){
+if (secondNum!=='') {calcNumbers();}
 operation='divide';
+isFirstNum=true;
 buffer='';
 return;
 };
 
 function calcResult (){
-
 if (operation=='plus'){
 result=+firstNum+(+secondNum);
 }
@@ -225,7 +214,7 @@ else if (operation=='divide'){
 result=+firstNum/(+secondNum);
 }
 firstNum=result;
-operation='';
+isFirstNum=true;
 buffer='';
 secondNum='';
 return;
@@ -233,12 +222,9 @@ return;
 
 function calcNumbers(){
 calcResult();
-operation='';
 document.getElementById("CalculatorField").innerHTML=result;
 return;
 };
-
-
 </script>
 
     
