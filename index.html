@@ -18,22 +18,29 @@ font-family: 'CalculatorFont';
 src: url('https://raw.githubusercontent.com/green-slug/Pics/master/pocket_calcuatlor_tt.ttf');
 }
 
-#ContainerText {
-padding: 5% 1% 5% 1%; 
-height: 100vh;
+body {
 background-color: #E5E5E5;
+}
+
+#ContainerMain {
+padding: 5% 1% 5% 1%; 
+}
+
+#footer {
+font-size: 10px;
+line-height: 1;
 }
 
 #CalculatorMain {
 padding: 2% 1% 2% 1%; 
-box-shadow: 5px 5px 5px #404040;
+box-shadow: 3px 3px 10px 5px #404040;
 border-left-color: #e1e1e1;
 border-top-color: #e1e1e1;
 border-right-color: #616161;
 border-bottom-color: #616161;  
 border-radius: 25px;
 border-style: solid;
-border-width: 1px;
+border-width: 2px;
 background-color: #6f6f5f;
 width: 300px;
 height: 450px;
@@ -41,13 +48,13 @@ height: 450px;
 
 #CalculatorHeader {
 padding: 3% 1% 3% 1%; 
-align: center;
+text-align: center;
 color: #fff;
 }
 
 #CalculatorField {
 padding: 1% 3% 1% 1%;
-width: 85%;
+width: 226px;
 background-color: #e5e5e5;
 border-left-color: #e1e1e1;
 border-top-color: #e1e1e1;
@@ -63,7 +70,7 @@ text-align: right;
 }
 
 #CalculatorButtons {
-width: 85%;
+width: 228px;
 padding: 5% 0% 0% 0%;
 }
 
@@ -94,80 +101,146 @@ background-color: #e5e5e5;
 .btnClear {
 background-color: #993333;
 }
-
-#footer {
-position:absolute;
-bottom:0;
-font-size: 10px;
-line-height: 1;
-width: 100%;
-}
-
 </style>
 
 <body>
 
-<div class="container-fluid" id="ContainerText">
+<div class="container-fluid" id="ContainerMain">
 
 <div class="container-fluid" id="CalculatorMain">
 <div class="container-fluid" id="CalculatorHeader" align="center">CALCULATOR</div>
-<div class="container-fluid" id="CalculatorField">+1234567890</div>
+<div class="container-fluid" id="CalculatorField">0</div>
 
 <div class="container-fluid" id="CalculatorButtons">
 
-<button type="button" class="button btnClear" id="btnC">C</button>
-<button type="button" class="button btnNumber" id="btnZ1">;)</button> 
-<button type="button" class="button btnOperation" id="btnR">√</button>
-<button type="button" class="button btnOperation" id="btnMultiple">*</button>
+<button type="button" class="button btnClear" id="btnC" onclick="clearField()">C</button>
+<button type="button" class="button btnNumber" id="btnZ1" onclick="helloWorld()">;)</button> 
+<button type="button" class="button btnOperation" id="btnNeg">±</button>
+<button type="button" class="button btnOperation" id="btnMultiple" onclick="multNumbers()">*</button>
 
 <button type="button" class="button btnNumber" id="btn7" onclick="captureNum('7')">7</button> 
 <button type="button" class="button btnNumber" id="btn8" onclick="captureNum('8')">8</button> 
 <button type="button" class="button btnNumber" id="btn8" onclick="captureNum('9')">9</button>
-<button type="button" class="button btnOperation" id="btnDivide">%</button> 
+<button type="button" class="button btnOperation" id="btnDivide" onclick="divNumbers()">%</button> 
 
 <button type="button" class="button btnNumber" id="btn4" onclick="captureNum('4')">4</button> 
 <button type="button" class="button btnNumber" id="btn5" onclick="captureNum('5')">5</button> 
 <button type="button" class="button btnNumber" id="btn6" onclick="captureNum('6')">6</button>
-<button type="button" class="button btnOperation" id="btnPlus">+</button> 
+<button type="button" class="button btnOperation" id="btnPlus" onclick="addNumbers()">+</button> 
 
-<button type="button" class="button btnNumber" id="btn1" onclick="captureNum('1')">1</button> 
+<button type="button" class="button btnNumber" id="btn1" onclick="captureNum('1')">1</button>
 <button type="button" class="button btnNumber" id="btn2" onclick="captureNum('2')">2</button>
 <button type="button" class="button btnNumber" id="btn3" onclick="captureNum('3')">3</button>
-<button type="button" class="button btnOperation" id="btnMinus">-</button> 
+<button type="button" class="button btnOperation" id="btnMinus" onclick="substrNumbers()">-</button> 
 
 <button type="button" class="button btnNumber" id="btn0" onclick="captureNum('0')">0</button> 
 <button type="button" class="button btnNumber" id="btnDp" onclick="captureNum('.')">.</button> 
-<button type="button" class="button btnOperation" id="btnEqual">=</button> 
+<button type="button" class="button btnOperation" id="btnEqual" onclick="calcNumbers()">=</button> 
 
 
 </div>
-
 </div>
+</div>
+
+<div class="container-fluid" id="footer" align="center">
+<p>Handiwork by <a href="mailto:spamute@gmail.com">Olga</a> in "O-La-La Web Design Studio" © 2016.</p>
 </div>
 
 <script>
-var buffer = 'z';
+var buffer='';
+var firstNum='';
+var secondNum='';
+var operation='';
+var result=0;
+
+function clearField(){
+buffer='';
+firstNum='';
+secondNum='';
+operation='';
+result=0;
+document.getElementById("CalculatorField").innerHTML='0';
+return;
+};
+
+function helloWorld(){
+clearField();
+document.getElementById("CalculatorField").innerHTML='Hello World!';
+return;
+};
 
 function captureNum (number){
-console.log(number);
-buffer=number||'z'||number;
-console.log(buffer);
+if (buffer.length<=10) {
+buffer=buffer+number;
+document.getElementById("CalculatorField").innerHTML=buffer;
+}
+
+if (operation=='') {firstNum=buffer;}
+else {secondNum=buffer;}
+
+console.log('buffer: '+buffer);
+console.log('firstNum: '+firstNum);
+console.log('secondNum: '+secondNum);
+console.log('operation: '+operation);
+
 return buffer;
 };
 
-console.log(buffer);
+function addNumbers(){
+operation='plus';
+buffer='';
+return;
+};
 
+function substrNumbers(){
+operation='minus';
+buffer='';
+return;
+};
 
+function multNumbers(){
+operation='multiple';
+buffer='';
+return;
+};
+
+function divNumbers(){
+operation='divide';
+buffer='';
+return;
+};
+
+function calcResult (){
+
+if (operation=='plus'){
+result=+firstNum+(+secondNum);
+}
+else if (operation=='minus'){
+result=+firstNum-(+secondNum);
+}
+else if (operation=='multiple'){
+result=+firstNum*(+secondNum);
+}
+else if (operation=='divide'){
+result=+firstNum/(+secondNum);
+}
+firstNum=result;
+operation='';
+buffer='';
+secondNum='';
+return;
+};
+
+function calcNumbers(){
+calcResult();
+operation='';
+document.getElementById("CalculatorField").innerHTML=result;
+return;
+};
 
 
 </script>
 
-
-<footer id="footer">
-      <div class="container-fluid">
-      <p>Handiwork by <a href="mailto:spamute@gmail.com">Olga</a> in "O-La-La Web Design Studio" © 2016.</p>
-      </div>
-</footer> 
     
 </body>
 </html>
