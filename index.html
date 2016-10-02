@@ -18,7 +18,7 @@ background-color: #3f3f3f;
 }
 
 #ContainerMain {
-padding: 5% 1% 5% 1%; 
+padding: 0% 0% 0% 0%; 
 }
 
 #header {
@@ -27,7 +27,7 @@ font-size: 60px;
 text-shadow: 1px 1px #585858;
 text-align: center;
 color: #d94848;
-margin: 0% 0% 2% 0%;
+margin: 3% 0% 0% 0%;
 }
 
 #buttons {
@@ -54,7 +54,7 @@ margin: 0% 1% 0% 0%;
 }
 
 #circle {
-margin: 5% 0% 0% 0%;
+margin: 0% 0% 0% 0%;
 position: fixed;
 top: 50%;
 left: 50%;
@@ -64,11 +64,11 @@ transform: translate(-50%, -50%);
 
 #outerCircle {
 padding: 8% 0% 0% 0%;
-width: 200px;
-height: 200px;
--webkit-border-radius: 100px;
--moz-border-radius: 100px;
-border-radius: 100px;
+width: 25vh;
+height: 25vh;
+-webkit-border-radius: 50%;
+-moz-border-radius: 50%;
+border-radius: 50%;
 border-color: #dd5d5d;
 border-style: solid;
 }
@@ -132,8 +132,8 @@ width: 100%;
 </footer> 
 
 <script>
-var workTimeMin=25;
-var restTimeMin=5;
+var workTimeMin=0.1;
+var restTimeMin=0.2;
 
 var workTimeSec=-1;
 var restTimeSec=-1; 
@@ -186,12 +186,7 @@ setInterval(function showFigures(){
  
  restTimeSec--;
  if (restTimeSec==0) { workTimeSec=workTimeMin*60; document.getElementById("outerCircle").style.background="#d94848";}
-
-
-
-
  }
- 
  }, 1000);
 }
 }
