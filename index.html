@@ -10,47 +10,89 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open Sans">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=VT323">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
 
 <style id="chrome://firebug/default-stylesheet.css" type="text/css">
-
 body {
-background-color: #E5E5E5;
+background-color: #3f3f3f;
 }
+
 #ContainerMain {
 padding: 5% 1% 5% 1%; 
 }
-#footer {
-position:absolute;
-bottom:0;
-font-size: 10px;
-line-height: 1;
-width: 100%;
+
+#header {
+font-family: Lobster;
+font-size: 60px;
+text-shadow: 1px 1px #585858;
+text-align: center;
+color: #d94848;
+margin: 0% 0% 2% 0%;
+}
+
+#buttons {
+font-family: Lobster;
+font-size: 36px;
+text-align: center;
+color: #fff;
+margin: 5% 0% 0% 0%;
+}
+
+#restTimeMinMinus, #restTimeMinPlus, #workTimeMinMinus, #workTimeMinPlus {
+padding: 1% 1% 1% 1%;
+background-color: #656565;
+box-shadow: 1px 1px 3px 1px #585858;
+color: #fff;
+}
+
+#restTimeValue, #workTimeValue {
+padding: 1% 1% 1% 1%;
+}
+
+#restTimeMin {
+margin: 0% 1% 0% 0%;
+}
+
+#circle {
+margin: 5% 0% 0% 0%;
+position: fixed;
+top: 50%;
+left: 50%;
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
 }
 
 #outerCircle {
+padding: 8% 0% 0% 0%;
 width: 200px;
 height: 200px;
 -webkit-border-radius: 100px;
 -moz-border-radius: 100px;
 border-radius: 100px;
-border-color: red;
+border-color: #dd5d5d;
 border-style: solid;
-    }
-
-#restTimeMinMinus, #restTimeMinPlus, #workTimeMinMinus, #workTimeMinPlus {
-background-color: #4c4c4c;
-color: #fff;
 }
 
-#circle {
-background-color: #fff;
+#innerCircle {
 width: 194px;
 height: 194px;
 -webkit-border-radius: 97px;
 -moz-border-radius: 97px;
 border-radius: 97px;
-  position: absolute;
+position: absolute;
+font-family: Lobster;
+font-size: 36px;
+text-align: center;
+color: #fff;
+}
+
+#footer {
+color: #fff;
+position:absolute;
+bottom:0;
+font-size: 10px;
+line-height: 1;
+width: 100%;
 }
 
 </style>
@@ -59,7 +101,7 @@ border-radius: 97px;
 
 <div class="container-fluid" id="ContainerMain">
 
-<div id="header">Pomodoro Clock</div>
+<div id="header"><h1>Pomodoro Clock</h1></div>
 
 <div id="buttons">
 
@@ -76,8 +118,10 @@ border-radius: 97px;
 </span>
 </div>
 
+<div id="circle">
 <div id="outerCircle">
-<div id="circle" onclick="move()"></div>
+<div id="innerCircle" onclick="move()"></div>
+</div>
 </div>
 </div>
 
@@ -96,7 +140,7 @@ var restTimeSec=-1;
 
 var isPaused=true;
 
-function workTimeMinus() { 
+function workTimeMinus() {
 workTimeMin = document.getElementById("workTimeValue").innerHTML;
 if (+workTimeMin>1) {workTimeMin = +workTimeMin - 1;}
 document.getElementById("workTimeValue").innerHTML = workTimeMin;
@@ -108,7 +152,7 @@ if (+workTimeMin<60) {workTimeMin= +workTimeMin + 1;}
 document.getElementById("workTimeValue").innerHTML = workTimeMin;
 }
 
-function restTimeMinus() { 
+function restTimeMinus() {
 restTimeMin = document.getElementById("restTimeValue").innerHTML;
 if (+restTimeMin>1) {restTimeMin = +restTimeMin - 1;}
 document.getElementById("restTimeValue").innerHTML = restTimeMin;
@@ -130,18 +174,18 @@ workTimeSec=workTimeMin*60;
 setInterval(function showFigures(){
  
  if (workTimeSec>=0) {
- document.getElementById("circle").innerHTML=Math.floor(workTimeSec/60)+":"+("00"+workTimeSec%60).slice(-2);
+ document.getElementById("innerCircle").innerHTML=Math.floor(workTimeSec/60)+":"+("00"+workTimeSec%60).slice(-2);
  
- if (workTimeSec==0) { restTimeSec=restTimeMin*60; document.getElementById("circle").style.background="green"; }
+ if (workTimeSec==0) { restTimeSec=restTimeMin*60; document.getElementById("outerCircle").style.background="#2b822b"; }
  
  workTimeSec--;
  }
  
  if (restTimeSec>0) {
- document.getElementById("circle").innerHTML=Math.floor(restTimeSec/60)+":"+("00"+restTimeSec%60).slice(-2);
+ document.getElementById("innerCircle").innerHTML=Math.floor(restTimeSec/60)+":"+("00"+restTimeSec%60).slice(-2);
  
  restTimeSec--;
- if (restTimeSec==0) { workTimeSec=workTimeMin*60; document.getElementById("circle").style.background="red";}
+ if (restTimeSec==0) { workTimeSec=workTimeMin*60; document.getElementById("outerCircle").style.background="#d94848";}
 
 
 
