@@ -1,0 +1,33 @@
+var input = ["10","17:02:00"
+             ,"17:02:00 21:50:00" //1
+             ,"06:56:00 06:58:00" 
+             ,"09:41:00 17:43:00" //1
+             ,"02:57:00 15:59:00"
+             ,"13:00:00 15:00:00"
+             ,"11:23:00 12:44:00"
+             ,"11:13:00 17:50:00" //1
+             ,"09:12:00 21:17:00" //1
+             ,"05:30:00 23:46:00" //1
+             ,"10:58:00 13:59:00"];
+
+function CountZ() {
+var custNumber = input[0];
+var qTime = "01/01/2011 " + input[1];
+var fInput = [];
+var counter = 0;
+
+for (i=2; i < input.length; i++) { 
+fInput.push(["01/01/2011 " + input[i].substr(0,input[i].indexOf(' ')), "01/01/2011 " + input[i].substr(input[i].indexOf(' ')+1)]);
+ }
+
+for (j=0; j<fInput.length; j++) {
+      
+    if ( Date.parse(fInput[j][0]) <= Date.parse(qTime)  &&  Date.parse(fInput[j][1]) > Date.parse(qTime)  ) {
+      counter = counter +1; 
+        }    
+  }
+ 
+return counter; }
+
+var test = CountZ();
+console.log(test);
