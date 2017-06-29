@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" type="text/javascript" ></script>
+<script src="jquery/2.1.4/jquery.min.js" type="text/javascript" ></script>
+
+<style id="chrome://firebug/default-stylesheet.css" type="text/css" charset="utf-8">
+
+body {
+background-image: cover;
+color: #000000;
+}
+
+.roundIcon {
+border-radius: 36px;
+}
+
+#ContainerText {
+margin: 10% 20% 10% 20%;
+font-size: 16px;
+text-shadow: 0.5px 1px #F2F2F2;
+}
+
+#ContainerButtons {
+margin: 10% 20% 10% 20%;
+}
+
+#ContentEmpty {
+margin: 5% 20% 0% 20%;
+}
+
+#footer {
+position:absolute;
+bottom:0;
+font-size: 10px;
+line-height: 1;
+width: 100%;
+}
+</style>
+
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+ 
+<script>
+var currentdate = new Date();
+
+function getBackground(weather) {
+var greyClouds="http://img12.deviantart.net/204b/i/2013/341/e/c/rainy_sky___06a_by_montvalentstock-d5hol5m.jpg";
+var clouds="http://portugalresident.com/sites/default/files/styles/node-detail/public/field/image/clouds_0.jpg?itok=UnuV1gMy";
+var sunny = "http://report.az/storage/news/2d24481fa1ef4a20e1a703f88f8400c4/aee96c6d-d63a-4f9a-897e-3213b477b5fe.jpg";
+var rain="https://pixabay.com/static/uploads/photo/2015/10/09/22/15/rain-980076_960_720.jpg";
+var snow="https://c1.staticflickr.com/9/8245/8466895177_04d19bd1ba_b.jpg";  
+    
+if (weather == '"'+'Clear'+'"') {
+backgroundImg="url('"+sunny+"')";
+}
+else if (weather == '"'+'Rain'+'"') {
+backgroundImg="url('"+rain+"')";
+} 
+else if (weather == '"'+'Clouds'+'"') {
+backgroundImg="url('"+greyClouds+"')";
+} 
+else if (weather == '"'+'Snow'+'"') {
+backgroundImg="url('"+snow+"')";
+} 
+else {
+backgroundImg="url('"+clouds+"')";
+};
+
+return backgroundImg;
+}
+
+function getIcon(weather) {
+var hour =currentdate.getHours();
+var dayTime;
+var gitHubRepo="https://raw.githubusercontent.com/Popolzooon/Pics/master/";
+
+if (hour <= 6 || hour >= 21) {dayTime="Night";} 
+else {dayTime="Day";};
+
+weather = weather.replace(/"/g, ''); 
+iconImgSrc=gitHubRepo+weather+dayTime+".jpg";
+
+return iconImgSrc;
+}
+
+function getweatherAPILink(city,countryCode,lang,units){
+var weatherAPILink= "http://api.openweathermap.org/data/2.5/weather?q="+city+","+countryCode+"&lang="+lang+"&units="+units+"&APPID=3553c4880352eed008ded9a170383392";
+
+return weatherAPILink;    
+}
+
+$.getJSON("https://geoip-db.com/json/geoip.php?jsonp=?", function(location) {
+var lang = "en";
+var windUnits = " km/h";
+var units = "metric";
+var tempCsign=" °C";
+var tempFsign=" °F";
+
+$('#country').html(location.country_name);
+$('#state').html(location.state);
+$('#city').html(location.city);
+
+var city = JSON.stringify(location.city);
+var countryCode= JSON.stringify(location.country_code);
+
+if (countryCode == '"'+'RU'+'"' ) {lang="ru"; windUnits=" км/час";}
+else if (countryCode == '"'+'UA'+'"') {lang="uk"; windUnits=" км/год"}
+else {lang= "en"; windUnits= " km/h";};
+
+var weatherAPILink= getweatherAPILink(city,countryCode,lang,units);
+
+//initial screen
+$.getJSON(weatherAPILink, function(data) {
+$('#wMain').html(data.weather[0].main);
+$('#wMainDet').html(data.weather[0].description);
+var wTemp=JSON.stringify(data.main.temp);
+$('#wTemp').html(Math.round(+wTemp));
+$('a#wTempA').html(tempCsign);
+$('#wWind').html(data.wind.speed+windUnits);
+
+
+var weather = JSON.stringify(data.weather[0].main);
+
+//special background for AU winter 
+var month = currentdate.getMonth() +1;
+if (countryCode == '"'+'AU'+'"' && (month == 6 || month == 7 || month == 8) ) {
+document.body.style.backgroundImage="url('http://imagecloud.tv/wp-content/uploads/2014/10/australian-winter_kanga.jpg')";
+}
+else {
+document.body.style.backgroundImage=getBackground(weather);}
+document.getElementById('iconImg').src=getIcon(weather);
+
+//change temperature units on click
+$('#wTempLink').on("click", function() {
+if (units == "metric") {
+units="imperial";
+weatherAPILink= getweatherAPILink(city,countryCode,lang,units);
+
+$.getJSON(weatherAPILink, function(data) {
+wTemp=JSON.stringify(data.main.temp);
+$('#wTemp').html(Math.round(+wTemp));
+$('a#wTempA').html(tempFsign);
+});
+}
+else if (units == "imperial") {
+units="metric";
+weatherAPILink= getweatherAPILink(city,countryCode,lang,units);
+$.getJSON(weatherAPILink, function(data) {
+wTemp=JSON.stringify(data.main.temp);
+$('#wTemp').html(Math.round(+wTemp));
+$('a#wTempA').html(tempCsign);
+});
+} 
+else {
+units="metric";
+weatherAPILink= getweatherAPILink(city,countryCode,lang,units);
+
+$.getJSON(weatherAPILink, function(data) {
+wTemp=JSON.stringify(data.main.temp);
+$('#wTemp').html(Math.round(+wTemp));
+$('a#wTempA').html(tempCsign);
+});
+};
+});
+}
+);
+});
+
+</script>
+
+<div class="container-fluid" id="ContainerHeader">
+<div class="container-fluid" id="ContentHeader" align="center">
+     <div><h2>Weather</h2> </div>
+</div>
+</div>
+
+	<div class="container-fluid" id="ContainerText">
+		<div class="container-fluid" id="ContentText" >
+		   <div class="container-fluid" id="ContainerLocation">
+		   <div class="container-fluid" id="ContentLocation" align="left">
+			   <div> <span id="city"></span> </div>
+			   <div> <span id="state"></span> </div>
+			   <div> <span id="country"></span> </div>
+		   </div>
+		   </div>
+		   <div class="container-fluid" id="ContentEmpty1"></br></div>
+		   <div class="container-fluid" id="ContentIcons" align="center">
+			<img class="roundIcon" id="iconImg" src="https://raw.githubusercontent.com/Popolzooon/Pics/master/ClearDay.jpg" alt="Weather Icon" height="72" width="72" > 
+		   </div>
+		   <div class="container-fluid" id="ContentEmpty2"></br></div>
+		   <div class="container-fluid" id="ContainerWeather">
+		   <div class="container-fluid" id="ContentWeather" align="left">
+			   <div> <span id="wMain"></span> </div>
+			   <div> <span id="wMainDet"></span> </div>
+			   <div> <span id="wTemp"></span><span id="wTempLink"><a id="wTempA" href=javascript:void()>    </a></span></div>
+			   <div> <span id="wWind"></span></div>
+		   </div>
+		   </div>
+		</div>
+	</div>
+		
+	<footer id="footer">
+	  <div class="container-fluid col-xs-6 col-sm-6 col-lg-6">
+	  <p>Handiwork by <a href="mailto:spamute@gmail.com">Olga</a> in "O-La-La Web Design Studio" © 2016. 
+	  Icons by <a href="http://www.shutterstock.com/gallery-3597020p1.html">Natalka</a> © 2016.</p>
+	  </div>
+	  <div class="container-fluid col-xs-6 col-sm-6 col-lg-6">
+	  <p>Location by <a href="https://geoip-db.com/">GeoIP Database</a>
+	  Weather by <a href="https://openweathermap.org">OpenWeatherMap</a></p>
+	  </div>
+	</footer> 
+
+</body>
+
+</html>
