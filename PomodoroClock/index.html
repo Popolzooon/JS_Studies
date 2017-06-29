@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" type="text/javascript" ></script>
+<script src="jquery/2.1.4/jquery.min.js" type="text/javascript" ></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open Sans">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
+
+<style id="chrome://firebug/default-stylesheet.css" type="text/css">
+#ContainerMain {
+height: 100vh;
+background-color: #3f3f3f;
+}
+
+#clockHeader {
+font-family: Lobster;
+font-size: 46px;
+text-shadow: 1px 1px #585858;
+text-align: center;
+color: #d94848;
+margin: 3% 0% 3% 0%;
+}
+
+#restTimeMinMinus, #restTimeMinPlus, #workTimeMinMinus, #workTimeMinPlus {
+padding: 1% 1% 1% 1%;
+background-color: #3f3f3f;
+border: solid;
+border-color: #3f3f3f;
+color: #fff;
+}
+
+#restTimeValue, #workTimeValue {
+font-family: Lobster;
+padding: 1% 1% 1% 1%;
+}
+
+#buttonsLabels, #buttonsGroup {
+text-align: center;
+color: #fff;
+}
+
+#buttonsLabels {
+font-size: 16px;
+}
+
+#buttonsGroup {
+font-size: 36px;
+}
+
+#circleContainer {
+position: fixed;
+top: 50%;
+left: 50%;
+-webkit-transform: translate(-50%, -50%);
+transform: translate(-50%, -50%);
+}
+
+#outerCircle {
+padding: 8% 0% 0% 0%;
+width: 25vh;
+height: 25vh;
+-webkit-border-radius: 25vh;
+-moz-border-radius: 25vh;
+border-radius: 25vh;
+border-color: #dd5d5d;
+border-style: solid;
+}
+
+#innerCircle {
+width: 24vh;
+height: 24vh;
+-webkit-border-radius: 24vh;
+-moz-border-radius: 24vh;
+border-radius: 24vh;
+}
+
+#innerCircleText, #innerCircleValue {
+font-family: Lobster;
+font-size: 24px;
+text-align: center;
+color: #fff;
+}
+
+#footer {
+color: #fff;
+position:absolute;
+bottom:0;
+font-size: 10px;
+line-height: 1;
+width: 100%;
+}
+</style>
+
+      <script>
+var workTimeMin=25;
+var restTimeMin=5;
+
+var workTimeSec=-1;
+var restTimeSec=-1; 
+
+var isPaused=true;
+
+function workTimeMinus() {
+workTimeMin = document.getElementById("workTimeValue").innerHTML;
+if (+workTimeMin>1) {workTimeMin = +workTimeMin - 1;}
+document.getElementById("workTimeValue").innerHTML = workTimeMin;
+}
+
+function workTimePlus() {
+workTimeMin = document.getElementById("workTimeValue").innerHTML;
+if (+workTimeMin<60) {workTimeMin= +workTimeMin + 1;}
+document.getElementById("workTimeValue").innerHTML = workTimeMin;
+}
+
+function restTimeMinus() {
+restTimeMin = document.getElementById("restTimeValue").innerHTML;
+if (+restTimeMin>1) {restTimeMin = +restTimeMin - 1;}
+document.getElementById("restTimeValue").innerHTML = restTimeMin;
+}
+
+function restTimePlus() {
+restTimeMin = document.getElementById("restTimeValue").innerHTML;
+if (+restTimeMin<60) {restTimeMin = +restTimeMin + 1;}
+document.getElementById("restTimeValue").innerHTML = restTimeMin;
+}
+
+function showFigures(){
+ if (workTimeSec>=0) {
+document.getElementById("outerCircle").style.background="#d94848";
+document.getElementById("innerCircleValue").innerHTML=Math.floor(workTimeSec/60)+":"+("00"+workTimeSec%60).slice(-2);
+ 
+ if (workTimeSec==0) { 
+restTimeSec=restTimeMin*60;
+document.getElementById("outerCircle").style.background="#2b822b"; 
+document.getElementById("innerCircleText").innerHTML="Break";
+}
+ workTimeSec--;
+ }
+ 
+ if (restTimeSec>0) { document.getElementById("innerCircleValue").innerHTML=Math.floor(restTimeSec/60)+":"+("00"+restTimeSec%60).slice(-2);
+ restTimeSec--;
+ if (restTimeSec==0) { 
+   workTimeSec=workTimeMin*60
+   document.getElementById("outerCircle").style.background="#d94848";
+   document.getElementById("innerCircleText").innerHTML="Session"; }    }    }
+
+var delayTime=0;
+var delayTimeZ=0;
+
+function move() {
+
+if (isPaused === true) {isPaused=false; }
+  else { isPaused = true; clearInterval(delayTimeZ);} 
+  
+if (isPaused === false) {
+workTimeSec=workTimeMin*60;
+delayTime = setInterval(showFigures, 1000);
+delayTimeZ = delayTime;
+}   }
+</script>
+
+<body>
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open Sans">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lobster">
+
+<div class="container-fluid" id="ContainerMain">
+
+<div id="clockHeader" class="container-fluid">Pomodoro Clock</div>
+
+<div class="container-fluid" id="buttonsContainer">
+
+<div class="container-fluid row" id="buttonsLabels">
+<div class="container-fluid col-sm-6 col-xs-6" id="restTimeText">Break Length</div>
+<div class="container-fluid col-sm-6 col-xs-6" id="workTimeText">Session Length</div>
+</div>
+
+<div class="container-fluid row" id="buttonsGroup">
+<div class="container-fluid col-sm-6 col-xs-6" id="restTimeButtons">
+<span><button type="button" id="restTimeMinMinus" onclick="restTimeMinus()" onmouseover="" style="cursor: pointer;">-</button></span>
+<span id="restTimeValue">5</span>
+<span><button type="button" id="restTimeMinPlus" onclick="restTimePlus()" onmouseover="" style="cursor: pointer;">+</button></span> 
+</div>
+<div class="container-fluid col-sm-6 col-xs-6" id="workTimeButtons">
+ <span><button type="button" id="workTimeMinMinus" onclick="workTimeMinus()" onmouseover="" style="cursor: pointer;">-</button></span>
+<span id="workTimeValue">25</span>
+<span><button type="button" id="workTimeMinPlus" onclick="workTimePlus()" onmouseover="" style="cursor: pointer;">+</button></span> 
+</div>
+</div>
+  
+</div>
+
+<div class="container-fluid" id="circleContainer" onclick="delayTime = move()">
+<div id="outerCircle">
+<div id="innerCircleText">Session</div>
+<div id="innerCircleValue">25</div>
+</div>
+</div>
+</div>
+
+<footer id="footer">
+      <div class="container-fluid">
+      <p>Handiwork by <a href="mailto:spamute@gmail.com">Olga</a> in "O-La-La Web Design Studio" © 2016.</p>
+      </div>
+</footer>
+</body>
+
+</html>
