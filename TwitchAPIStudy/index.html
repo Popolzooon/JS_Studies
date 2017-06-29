@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" type="text/javascript" ></script>
+<script src="jquery/2.1.4/jquery.min.js" type="text/javascript" ></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open Sans">
+
+<style id="chrome://firebug/default-stylesheet.css" type="text/css">
+body {
+    background-color: #011f4b;
+    font-family: "Open Sans";
+    color: white;
+}
+
+#TwitchContent {
+margin: 15% 10% 15% 10%;
+}
+
+#footer {
+position:absolute;
+bottom:0;
+font-size: 10px;
+line-height: 1;
+width: 100%;
+color: white;
+}
+</style>
+
+<body>
+
+<div class="container-fluid" id="ContainerText" >
+<div class="container-fluid" id="ContentText">
+<h2>Twitch Streamers</h2>
+<div class="container-fluid" id="TwitchContent"></div>
+</div>
+</div>
+</div>
+
+<script>
+var channelNameList=["ESL_SC2", "brunofin", "RobotCaleb", "comster404", "cretetion", "freecodecamp", "storbeck", "habathcx", "noobs2ninjas", "OgamingSC2"];
+var channelStatus="Account Closed!";
+var logoImgLink="https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png";
+var boxColor='#ffffff';
+
+var html='';
+
+for (var i=0; i<channelNameList.length; i++) {
+(function(i) {
+
+$.getJSON("https://api.twitch.tv/kraken/channels/"+channelNameList[i]+"?callback=?", function(data) {
+
+var cExists=JSON.stringify(data.status);
+var cActive=JSON.stringify(data.mature);
+
+if (cExists == 422) {
+    channelStatus="Account Closed"; 
+    logoImgLink="https://upload.wikimedia.org/wikipedia/commons/1/13/Glossy_3d_blue_questionmark.png";
+    boxColor='#d9d9d9';}
+else if (cExists !== 422 && cActive !== true) {
+    channelStatus="Offline"; 
+    logoImgLink=JSON.stringify(data.logo); 
+    logoImgLink=logoImgLink.replace(/"/g,'');
+    boxColor='#b3e0ff';
+ }
+else if (cExists !== 422 && cActive === true) {
+    channelStatus=JSON.stringify(data.status); 
+    logoImgLink=JSON.stringify(data.logo); 
+    logoImgLink=logoImgLink.replace(/"/g,'');
+    boxColor='#c6ecc6';
+}
+
+html+='<div class="container-fluid cBox" id="cBox'+i+'" style="background-color:'+boxColor+';"><img id="cLogoImg'+i+'" src="'+logoImgLink+'" alt="Channel Logo" height="50" width="50"><a class="NameLink'+i+' NameLinkA'+i+'" id="cNameLinkA'+i+'" href="'+'https://www.twitch.tv/'+channelNameList[i]+'">'+channelNameList[i]+'</a><span class="right" id="cStatus'+i+'">'+channelStatus+'</span></div>';
+
+document.getElementById("TwitchContent").innerHTML=html;
+document.getElementById("ContentText").style.margin="5% 10% 5% 10%";
+document.getElementById("footer").style.position="relative";
+   
+}); 
+})(i);
+}
+
+</script>
+
+<footer id="footer">
+      <div class="container-fluid">
+      <p>Handiwork by <a href="mailto:spamute@gmail.com">Olga</a> in "O-La-La Web Design Studio" © 2016.</p>
+      </div>
+</footer> 
+    
+</body>
+</html>
