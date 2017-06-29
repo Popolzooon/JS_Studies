@@ -1,0 +1,24 @@
+#grey-well {
+  width: 75%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+#white-well {
+  width: 90%;
+  margin: auto;
+  background-color: #FFFFFF;
+  border-style: solid;
+  border-color: white;
+  border-width: 5px;
+  text-align: center;
+}
+#text-box {
+  width: 75%;
+}
+.centrifier {
+  margin: auto;
+  
+}
+.left-margin {
+  margin-left: -15px;
+}
